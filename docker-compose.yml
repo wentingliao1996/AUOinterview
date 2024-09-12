@@ -1,0 +1,26 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  mysql:
+    image: mariadb:latest
+    container_name: auo_interview_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3306:3306"
+  
+  python:
+    image: wentingla/auotest:1.1.0
+    container_name: auo_interview_api
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash -c "python main.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
